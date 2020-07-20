@@ -15,6 +15,7 @@ namespace COVID19.Tracker.Data
 
             #region Services
             services.AddTransient<IStateService, StateService>();
+            services.AddTransient<IStatsService, StatsService>();
             #endregion
 
 

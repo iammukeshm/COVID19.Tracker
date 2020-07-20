@@ -14,13 +14,22 @@
     <div id="wrapper">
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow" style="padding:.5rem 2.5rem!important;">
 
                     <!-- Topbar Search -->
-                    <form class="d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="button">
+                            India
+                        </button>
+                    </div>
+                    <div style="padding: 5px;color: gray;">
+                        <small>or</small>
+                    </div>
+                    <form class="d-sm-inline-block navbar-search"  style="width: 200px;">
                         <div class="input-group">
-                            <select name="customerSelect2" class="form-control select2bs4 state-selection" id="stateSelect2" style="width: 100%;"></select>
+                            <select name="stateSelect2" class="form-control select2bs4 state-selection" id="stateSelect2"></select>
                         </div>
+
                     </form>
 
                     <!-- Topbar Navbar -->

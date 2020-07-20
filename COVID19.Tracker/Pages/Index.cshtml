@@ -4,18 +4,33 @@
     ViewData["Title"] = "Home page";
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
+<style>
+    .meta-badge {
+        width: fit-content;
+        background: red;
+        border-radius: 5px;
+        padding: 6px;
+        color: white;
+        font-weight: bold;
+        font-size: 12px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+</style>
+<h1 class="h2 mb-2 text-gray-800">COVID-19 Tracker</h1>
+<small>Built with ASP.NET Core 3.1 and Bootstrap.</small>
+<div class="meta-badge" style="background: #eaecf4!important;color:black!important">Data Last Updated on @Model.ViewModel.Stats.Meta.Last_Updated.ToString("dd MMMM, yyyy hh:mm:ss tt")</div>
 
-<h1 class="h3 mb-2 text-gray-800">Realtime COVID19 Tracker - India</h1>
-<small>Built on ASP.NET Core 3.1</small>
 <p></p>
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-
-    <div class="input-group date" style="width:200px!important" id="reservationdate" data-target-input="nearest">
-        <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate">
-        <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
-            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+    <h1 class="h3 mb-0 text-gray-800" id="countryStateLabel">India</h1>
+    <div class="input-group" style="width:230px!important">
+        <input type="text" class="form-control float-right" id="selectedDate">
+        <div class="input-group-append">
+            <span class="input-group-text">
+                <i class="far fa-calendar-alt"></i>
+            </span>
         </div>
     </div>
 </div>
@@ -28,7 +43,13 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Confirmed Cases</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                        <div class="meta-badge" style="background: #4e73df;display:flex;">
+                            <span>+ </span>
+                            <div id="confirmedDelta" class="Count">
+                                @Model.ViewModel.Stats.Delta.Confirmed
+                            </div>
+                        </div>
+                        <div id="confirmedTotal" class="h5 mb-0 font-weight-bold text-gray-800 Count">@Model.ViewModel.Stats.Total.Confirmed</div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -44,8 +65,9 @@
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Active Cases</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Tested Cases</div>
+                        <div id="testedUpdatedDate" class="meta-badge" style="background:#1cc88a!important ">As of @Model.ViewModel.Stats.Meta.Tested.Last_Updated.ToString("dd MMMM, yyyy")</div>
+                        <div id="testedTotal" class="h5 mb-0 font-weight-bold text-gray-800 Count">@Model.ViewModel.Stats.Total.Tested</div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -64,12 +86,13 @@
                         <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Recoveries</div>
                         <div class="row no-gutters align-items-center">
                             <div class="col-auto">
-                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-                            </div>
-                            <div class="col">
-                                <div class="progress progress-sm mr-2">
-                                    <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="meta-badge" style="background:#36b9cc!important;display:flex;">
+                                    <span>+ </span>
+                                    <div id="recoveredDelta" class="Count">
+                                        @Model.ViewModel.Stats.Delta.Recovered
+                                    </div>
                                 </div>
+                                <div id="recoveredTotal" class="h5 mb-0 mr-3 font-weight-bold text-gray-800 Count">@Model.ViewModel.Stats.Total.Recovered</div>
                             </div>
                         </div>
                     </div>
@@ -88,7 +111,13 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Deceased</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                        <div class="meta-badge" style="background:#e74a3b!important;display:flex;">
+                            <span>+ </span>
+                            <div id="deceasedDelta" class="Count">
+                                @Model.ViewModel.Stats.Delta.Deceased
+                            </div>
+                        </div>
+                        <div id="deceasedTotal" class="h5 mb-0 font-weight-bold text-gray-800 Count">@Model.ViewModel.Stats.Total.Deceased</div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-comments fa-2x text-gray-300"></i>
@@ -100,91 +129,36 @@
 </div>
 <div class="row">
 
-    <!-- Earnings (Monthly) Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-primary shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Confirmed Cases</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div class="col-xl-12">
 
-    <!-- Earnings (Monthly) Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-success shadow h-100 py-2">
+        <!-- Area Chart -->
+        <div class="card border-left-primary shadow mb-4">
             <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Active Cases</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                    </div>
+                <div class="chart-area">
+                    <canvas id="myAreaChart"></canvas>
                 </div>
+                <hr>
             </div>
         </div>
-    </div>
 
-    <!-- Earnings (Monthly) Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-info shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Recoveries</div>
-                        <div class="row no-gutters align-items-center">
-                            <div class="col-auto">
-                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-                            </div>
-                            <div class="col">
-                                <div class="progress progress-sm mr-2">
-                                    <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Pending Requests Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-danger shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Deceased</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-comments fa-2x text-gray-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 @section Scripts
 {
     <script type="text/javascript">
-        //Date range picker
-        $('#reservationdate').datetimepicker({
-            format: 'L'
+        $('#selectedDate').daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: false,
+            timePicker: false,
+            locale: {
+                format: 'DD MMM, YYYY'
+            },
+            maxDate: new Date()
         });
     </script>
+    <script src="~/js/dashboard.js"></script>
+    <!-- Page level custom scripts -->
+    <script src="~/js/demo/chart-area-demo.js"></script>
 
 }
 
