@@ -8,4 +8,9 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\COVID19.Tracker.Core\COVID19.Tracker.Core.csproj" />
+    <ProjectReference Include="..\COVID19.Tracker.Data\COVID19.Tracker.Data.csproj" />
+  </ItemGroup>
+
 </Project>
