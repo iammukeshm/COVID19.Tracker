@@ -28,10 +28,38 @@
     }
 }).on('change', async function () {
     data = $("#stateSelect2").select2("data")[0];
+    await loadData(data);
+});
+
+
+
+$(document).ready(async function () {
+    animateNumbers();
+    $("#countryButton").click(async function () {
+        var data = { id: "TT", text : "India" }
+        await loadData(data);
+    }); 
+});
+
+function animateNumbers() {
+    $('.Count').each(function () {
+        $(this).prop('Counter', 0).animate({
+            Counter: $(this).text()
+        }, {
+            duration: 1000,
+            easing: 'swing',
+            step: function (now) {
+                $(this).text(Math.ceil(now).toLocaleString('en'));
+            }
+        });
+    });
+}
+
+async function loadData(data) {
     var url = "/api/stats?code=" + data.id;
     let response = await fetch(url);
 
-    if (response.ok) { 
+    if (response.ok) {
         let json = await response.json();
         console.log(json);
         $('#countryStateLabel').text(data.text);
@@ -51,24 +79,4 @@
         alert("HTTP-Error: " + response.status);
 
     }
-});
-
-
-
-$(document).ready(function () {
-    animateNumbers()
-});
-
-function animateNumbers() {
-    $('.Count').each(function () {
-        $(this).prop('Counter', 0).animate({
-            Counter: $(this).text()
-        }, {
-            duration: 1000,
-            easing: 'swing',
-            step: function (now) {
-                $(this).text(Math.ceil(now).toLocaleString('en'));
-            }
-        });
-    });
 }

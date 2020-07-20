@@ -29,6 +29,7 @@ namespace COVID19.Tracker.Controllers
         public async Task<IActionResult> Search(string term)
         {
             var states= stateService.GetAllStates();
+            states.RemoveAll(a => a.Code == "TT");
             var data = states.Where(a => a.Code.Contains(term,StringComparison.OrdinalIgnoreCase) || a.Name.Contains(term, StringComparison.OrdinalIgnoreCase)).ToList().AsReadOnly();
             return Ok(data);
         }
