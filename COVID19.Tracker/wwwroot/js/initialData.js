@@ -29,6 +29,8 @@
 }).on('change', async function () {
     data = $("#stateSelect2").select2("data")[0];
     await loadData(data);
+
+    $("#districtsTable").show();
 });
 
 
@@ -36,6 +38,7 @@
 $(document).ready(async function () {
     animateNumbers();
     $("#countryButton").click(async function () {
+        $("#districtsTable").hide();
         var data = { id: "TT", text : "India" }
         await loadData(data);
     }); 
@@ -74,7 +77,6 @@ async function loadData(data) {
         $('#deceasedDelta').text(parseInt(json.delta.deceased));
         $('#deceasedTotal').text(json.total.deceased);
         animateNumbers();
-
     } else {
         alert("HTTP-Error: " + response.status);
 

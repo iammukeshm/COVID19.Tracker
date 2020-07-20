@@ -9,5 +9,6 @@ namespace COVID19.Tracker.Core.Models.COVIDStats
         public Delta Delta { get; set; }
         public Meta Meta { get; set; }
         public Total Total { get; set; }
+        public Dictionary<string, Stats> Districts { get; set; }
     }
 }

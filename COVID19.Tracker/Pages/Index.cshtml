@@ -127,6 +127,83 @@
         </div>
     </div>
 </div>
+
+@if (Model.ViewModel.Stats.Districts.Any())
+{
+
+    <div id="districtsTable">
+        <div class="card border-left-primary shadow mb-4">
+            <div class="card-body p-0">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>District</th>
+                            <th>Confirmed</th>
+                            <th>Recovered</th>
+                            <th>Deceased</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var district in Model.ViewModel.Stats.Districts)
+                        {
+                            <tr>
+                                <td>@district.Key</td>
+                                <td>
+                                    <div>
+                                        @if (district.Value.Delta != null)
+                                        {
+                                            <div class="font-weight-bold" style="display:flex;font-size:12px;">
+                                                <span>+ </span>
+                                                <div id="deceasedDelta">
+                                                    @district.Value.Delta.Confirmed
+                                                </div>
+                                            </div>
+                                        }
+
+                                        <div id="deceasedTotal" class="font-weight-bold text-gray-800 ">@district.Value.Total.Confirmed</div>
+                                    </div>
+
+                                </td>
+                                <td>
+                                    <div>
+                                        @if (district.Value.Delta != null)
+                                        {
+                                            <div class="font-weight-bold" style="display:flex;font-size:12px;">
+                                                <span>+ </span>
+                                                <div id="deceasedDelta">
+                                                    @district.Value.Delta.Recovered
+                                                </div>
+                                            </div>
+                                        }
+
+                                        <div id="deceasedTotal" class="font-weight-bold text-gray-800 ">@district.Value.Total.Recovered</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        @if (district.Value.Delta != null)
+                                        {
+                                            <div class="font-weight-bold" style="display:flex;font-size:12px;">
+                                                <span>+ </span>
+                                                <div id="deceasedDelta">
+                                                    @district.Value.Delta.Deceased
+                                                </div>
+                                            </div>
+                                        }
+
+                                        <div id="deceasedTotal" class="font-weight-bold text-gray-800 ">@district.Value.Total.Deceased</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </div>
+}
 <div class="row">
 
     <div class="col-xl-12">
