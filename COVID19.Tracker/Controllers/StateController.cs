@@ -24,5 +24,13 @@ namespace COVID19.Tracker.Controllers
             var states = stateService.GetAllStates();
             return Ok(states);
         }
+        [HttpGet]
+        [Route("search")]
+        public async Task<IActionResult> Search(string term)
+        {
+            var states= stateService.GetAllStates();
+            var data = states.Where(a => a.Code.Contains(term,StringComparison.OrdinalIgnoreCase) || a.Name.Contains(term, StringComparison.OrdinalIgnoreCase)).ToList().AsReadOnly();
+            return Ok(data);
+        }
     }
 }
