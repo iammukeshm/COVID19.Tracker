@@ -17,9 +17,13 @@
         margin-bottom: 10px;
     }
 </style>
-<h1 class="h2 mb-2 text-gray-800">COVID-19 Tracker</h1>
-<small>Built with ASP.NET Core 3.1 and Bootstrap.</small>
-<div class="meta-badge" id="dateLastUpdatedOn" style="background: #eaecf4!important;color:black!important">Data Last Updated on @Model.ViewModel.Stats.Meta.Last_Updated.ToString("dd MMMM, yyyy hh:mm:ss tt")</div>
+<div style="display:flex;">
+    <img src="~/img/virus.png" style="height: 35px; padding-right: 10px;" />
+    <h1 class="h2 mb-2 text-gray-800">COVID-19 Tracker</h1>
+</div>
+
+<small>Built with ASP.NET Core 3.1 , Bootstrap and JS. Real-time Curated Data from api.covid19india.org</small>
+<div class="meta-badge" id="dateLastUpdatedOn" style="background: #1cc88a !important;color:white!important">Data Last Updated on @Model.ViewModel.Stats.Meta.Last_Updated.ToString("dd MMMM, yyyy hh:mm:ss tt")</div>
 
 <p></p>
 <!-- Page Heading -->
@@ -43,16 +47,14 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Confirmed Cases</div>
-                        <div class="meta-badge" style="background: #4e73df;display:flex;">
+                        <div class="meta-badge" style="        background: #4e73df;
+        display: flex;">
                             <span>+ </span>
                             <div id="confirmedDelta" class="Count">
                                 @Model.ViewModel.Stats.Delta.Confirmed
                             </div>
                         </div>
-                        <div id="confirmedTotal" class="h5 mb-0 font-weight-bold text-gray-800 Count">@Model.ViewModel.Stats.Total.Confirmed</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        <div id="confirmedTotal" class="h3 mb-0 font-weight-bold text-gray-800 Count">@Model.ViewModel.Stats.Total.Confirmed</div>
                     </div>
                 </div>
             </div>
@@ -67,10 +69,7 @@
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Tested Cases</div>
                         <div id="testedUpdatedDate" class="meta-badge" style="background:#1cc88a!important ">As of @Model.ViewModel.Stats.Meta.Tested.Last_Updated.ToString("dd MMMM, yyyy")</div>
-                        <div id="testedTotal" class="h5 mb-0 font-weight-bold text-gray-800 Count">@Model.ViewModel.Stats.Total.Tested</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        <div id="testedTotal" class="h3 mb-0 font-weight-bold text-gray-800 Count">@Model.ViewModel.Stats.Total.Tested</div>
                     </div>
                 </div>
             </div>
@@ -92,12 +91,9 @@
                                         @Model.ViewModel.Stats.Delta.Recovered
                                     </div>
                                 </div>
-                                <div id="recoveredTotal" class="h5 mb-0 mr-3 font-weight-bold text-gray-800 Count">@Model.ViewModel.Stats.Total.Recovered</div>
+                                <div id="recoveredTotal" class="h3 mb-0 mr-3 font-weight-bold text-gray-800 Count">@Model.ViewModel.Stats.Total.Recovered</div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
                     </div>
                 </div>
             </div>
@@ -117,10 +113,7 @@
                                 @Model.ViewModel.Stats.Delta.Deceased
                             </div>
                         </div>
-                        <div id="deceasedTotal" class="h5 mb-0 font-weight-bold text-gray-800 Count">@Model.ViewModel.Stats.Total.Deceased</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-comments fa-2x text-gray-300"></i>
+                        <div id="deceasedTotal" class="h3 mb-0 font-weight-bold text-gray-800 Count">@Model.ViewModel.Stats.Total.Deceased</div>
                     </div>
                 </div>
             </div>
@@ -128,8 +121,6 @@
     </div>
 </div>
 
-@if (Model.ViewModel.Stats.Districts!=null)
-{
 
     <div id="districtsTable">
         <div class="card border-left-primary shadow mb-4">
@@ -144,66 +135,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var district in Model.ViewModel.Stats.Districts)
-                        {
-                            <tr>
-                                <td>@district.Key</td>
-                                <td>
-                                    <div>
-                                        @if (district.Value.Delta != null)
-                                        {
-                                            <div class="font-weight-bold" style="display:flex;font-size:12px;">
-                                                <span>+ </span>
-                                                <div id="deceasedDelta">
-                                                    @district.Value.Delta.Confirmed
-                                                </div>
-                                            </div>
-                                        }
-
-                                        <div id="deceasedTotal" class="font-weight-bold text-gray-800 ">@district.Value.Total.Confirmed</div>
-                                    </div>
-
-                                </td>
-                                <td>
-                                    <div>
-                                        @if (district.Value.Delta != null)
-                                        {
-                                            <div class="font-weight-bold" style="display:flex;font-size:12px;">
-                                                <span>+ </span>
-                                                <div id="deceasedDelta">
-                                                    @district.Value.Delta.Recovered
-                                                </div>
-                                            </div>
-                                        }
-
-                                        <div id="deceasedTotal" class="font-weight-bold text-gray-800 ">@district.Value.Total.Recovered</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div>
-                                        @if (district.Value.Delta != null)
-                                        {
-                                            <div class="font-weight-bold" style="display:flex;font-size:12px;">
-                                                <span>+ </span>
-                                                <div id="deceasedDelta">
-                                                    @district.Value.Delta.Deceased
-                                                </div>
-                                            </div>
-                                        }
-
-                                        <div id="deceasedTotal" class="font-weight-bold text-gray-800 ">@district.Value.Total.Deceased</div>
-                                    </div>
-                                </td>
-                            </tr>
-                        }
-
                     </tbody>
                 </table>
             </div>
             <!-- /.card-body -->
         </div>
     </div>
-}
 <div class="row">
 
     <div class="col-xl-12">
