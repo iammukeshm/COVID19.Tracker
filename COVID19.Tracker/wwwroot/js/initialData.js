@@ -68,14 +68,25 @@ async function loadData(data) {
         $('#countryStateLabel').text(data.text);
         var date = new Date($('#selectedDate').val());
         var formattedDate = moment(date).format("YYYY-MM-DD");
-        $('#confirmedDelta').text(json.delta.confirmed);
+        if (json.delta == null) {
+            $('#confirmedDelta').text(0);
+            $('#recoveredDelta').text(0);
+            $('#deceasedDelta').text(0);
+        }
+        else {
+            $('#confirmedDelta').text(json.delta.confirmed);
+            $('#recoveredDelta').text(parseInt(json.delta.recovered));
+            $('#deceasedDelta').text(parseInt(json.delta.deceased));
+        }
+        $('#dateLastUpdatedOn').text("Data Last Updated on " + moment(json.meta.last_Updated).format("DD MMMM, YYYY hh:mm:ss A"));
         $('#confirmedTotal').text(parseInt(json.total.confirmed));
-        $('#testedUpdatedDate').text("As of " + moment(json.meta.last_updated).format("DD MMMM, YYYY"));
+        $('#testedUpdatedDate').text("As of " + moment(json.meta.tested.last_Updated).format("DD MMMM, YYYY"));
         $('#testedTotal').text(json.total.tested);
-        $('#recoveredDelta').text(parseInt(json.delta.recovered));
+        
         $('#recoveredTotal').text(json.total.recovered);
-        $('#deceasedDelta').text(parseInt(json.delta.deceased));
+        
         $('#deceasedTotal').text(json.total.deceased);
+        
         animateNumbers();
     } else {
         alert("HTTP-Error: " + response.status);
